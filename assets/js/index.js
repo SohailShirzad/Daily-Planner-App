@@ -2,6 +2,10 @@
 // get the current date element by Id.
 const currentDateElement  = $("#currentDay");
 var c = 0; // counter
+const clearButton = $("#clear");
+
+
+
 
 // assuming the day starts at 9 and finishes at 17:00
 var numberOfBlocks = 18;
@@ -35,7 +39,13 @@ createTimeBlocks();
 
 setTimeBlocksColor();
 
-}
+addNotes();
+
+getNotes();
+
+
+
+
 
 //create dynamic divs for time-blocks
 
@@ -46,13 +56,7 @@ function createTimeBlocks(){
         var time = i;
         var row = $("<div>");
         row.addClass("row time-block");
-
-        if(time >= 10){
-            row.attr("data-hour", i);
-            
-        }else{
-            row.attr("data-hour", "0" + i);
-        }
+        row.attr("data-hour", i);
 
         //now create the flex items 
 
@@ -78,7 +82,8 @@ function createTimeBlocks(){
         textArea.addClass("textArea");
         //need to assign id 09 instead of 9 else first columns will return undefined
         
-        time >= 10 ? textArea.attr("id", i) : textArea.attr("id", "0" + i);
+
+        textArea.attr("id", i);
 
         centerColumn.append(textArea);
 
@@ -111,24 +116,58 @@ function setTimeBlocksColor(){
 
     })
 
-    var saveBtn = $('.saveBtn');
+
+    
+
+};
+
+function addNotes(){
+    const saveBtn = $('.saveBtn');
     saveBtn.on('click', function(){
         var currentId = $(this).parent().attr("data-hour");
         var description = $('#'+currentId).val();
         localStorage.setItem(currentId, description);
+
+
     })
 
-};
+}
 
 
 
+function clearNotes(){
+
+    var confirmReset = confirm("Are you sure you want to clear all your notes?")
+    var description = $('.textArea');
+    isTrue = true;
+    if(confirmReset === isTrue){
+        for (var i = 9; i < numberOfBlocks; i++) {
+          localStorage.removeItem(i);
+          description.text("");
+          
+        }
+        description.text("");
+        
+    }
+
+}
+
+clearButton.on('click', function(){
+    clearNotes();
     
-    
-   
+
+})
+
+
+function getNotes(){
+    for(var i = 9; i < numberOfBlocks; i++ ){
+        var getNotes = localStorage.getItem(i);
+        var description = $('#'+ i);
+        description.text(getNotes);
+    }
+}
 
 
 
 
-
-
-
+}
