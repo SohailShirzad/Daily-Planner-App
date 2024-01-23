@@ -15,6 +15,10 @@ textarea{
   height: 100%;
 }
 
+i:hover{
+  cursor: pointer;
+}
+
 header {
   text-align: center;
   background-color: transparent;
