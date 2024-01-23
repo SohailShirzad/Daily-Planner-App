@@ -42,10 +42,8 @@ setTimeBlocksColor();
 function createTimeBlocks(){
 
     for(var i = 9; i < numberOfBlocks; i++){
-
         // convenient variable 
         var time = i;
-
         var row = $("<div>");
         row.addClass("row time-block");
 
@@ -58,7 +56,7 @@ function createTimeBlocks(){
 
         //now create the flex items 
 
-          // create right column for save button
+          //create right column for save button
 
         const rightColumn = $("<div>");
         rightColumn.addClass("col-xs-2 col-sm-2 col-md-2 col-lg-1 d-flex justify-content-center align-items-center align saveBtn");
@@ -78,18 +76,19 @@ function createTimeBlocks(){
         centerColumn.addClass("time-block col-xs-8 col-sm-8 col-md-8 col-lg-10 description")
         const textArea = $("<textarea>");
         textArea.addClass("textArea");
-        textArea.attr("id", time);
+        //need to assign id 09 instead of 9 else first columns will return undefined
+        
+        time >= 10 ? textArea.attr("id", i) : textArea.attr("id", "0" + i);
+
         centerColumn.append(textArea);
 
+
+        // add them all inside the parent div with class row
         row.append(lefColumn, centerColumn, rightColumn);
         container.append(row);
         timeBlock.push(row);
 
-        if(time < 12){
-            leftP.text(i + " AM");
-        }else if(time >= 12){
-            leftP.text(i + " PM")
-        }
+        time < 12 ? leftP.text(i + " AM") : leftP.text(i + " PM");
         
     }
 
