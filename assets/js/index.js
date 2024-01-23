@@ -58,27 +58,7 @@ function createTimeBlocks(){
 
         //now create the flex items 
 
-        var lefColumn = $("<div>");
-        lefColumn.addClass("hour col-xs-2 col-sm-2 col-md-2 col-lg-1")
-        var leftP = $("<p>");
-        leftP.addClass("mt-3 text-right");
-
-        if(time < 12){
-            leftP.text(i + " AM");
-        }else if(time >= 12){
-            leftP.text(i + " PM")
-        }
-
-        lefColumn.append(leftP);
-
-        // Create center column 
-        const centerColumn = $("<div>");
-        centerColumn.addClass("time-block col-xs-8 col-sm-8 col-md-8 col-lg-10 description")
-        const textArea = $("<textarea>");
-        textArea.addClass("user-input");
-        centerColumn.append(textArea);
-
-        // create right column for save button
+          // create right column for save button
 
         const rightColumn = $("<div>");
         rightColumn.addClass("col-xs-2 col-sm-2 col-md-2 col-lg-1 d-flex justify-content-center align-items-center align saveBtn");
@@ -86,10 +66,30 @@ function createTimeBlocks(){
         icon.addClass("fas fa-save icon");
         rightColumn.append(icon);
 
+        // create left column to show the time. 
+        var lefColumn = $("<div>");
+        lefColumn.addClass("hour col-xs-2 col-sm-2 col-md-2 col-lg-1")
+        var leftP = $("<p>");
+        leftP.addClass("mt-3 text-right");
+        lefColumn.append(leftP);
+
+        // Create center column 
+        const centerColumn = $("<div>");
+        centerColumn.addClass("time-block col-xs-8 col-sm-8 col-md-8 col-lg-10 description")
+        const textArea = $("<textarea>");
+        textArea.addClass("textArea");
+        textArea.attr("id", time);
+        centerColumn.append(textArea);
 
         row.append(lefColumn, centerColumn, rightColumn);
         container.append(row);
         timeBlock.push(row);
+
+        if(time < 12){
+            leftP.text(i + " AM");
+        }else if(time >= 12){
+            leftP.text(i + " PM")
+        }
         
     }
 
@@ -97,21 +97,39 @@ function createTimeBlocks(){
 }
 
     // now assign color to the events (past, present, future)
-    function setTimeBlocksColor(){
-        timeBlock.forEach(function(block, index){
-            var currentId = block.attr("data-hour")
-            var desc = block.find(".description");
-            console.log(now);
-            console.log(currentId);
+function setTimeBlocksColor(){
+    timeBlock.forEach(function(block, index){
+        var currentId = block.attr("data-hour");
+        var desc = block.find(".description");
+        
+        if(currentId < now ){
+            desc.addClass("past");
+        }else if(currentId  === now){
+            desc.addClass("present");
+        }else{
+            desc.addClass("future")
+        }
+
+    })
+
+    var saveBtn = $('.saveBtn');
+    saveBtn.on('click', function(){
+        var currentId = $(this).parent().attr("data-hour");
+        var description = $('#'+currentId).val();
+        localStorage.setItem(currentId, description);
+    })
+
+};
+
+
+
     
-            if(currentId < now ){
-                desc.addClass("past");
-            }else if(currentId  === now){
-                desc.addClass("present");
-            }else{
-                desc.addClass("future")
-            }
     
-        });
-    }
+   
+
+
+
+
+
+
 
