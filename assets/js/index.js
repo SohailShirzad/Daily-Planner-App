@@ -146,7 +146,7 @@ function clearNotes(){
           description.text("");
           
         }
-        description.text("");
+        location.reload();
         
     }
 
